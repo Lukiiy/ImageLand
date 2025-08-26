@@ -149,12 +149,28 @@ end
 function imageLand:get(id)
     if not self.atlas or self.needsRebuild then self:buildAtlas() end
 
+    local uv = self.atlasData[id]
+    if not uv then return nil end
+
     return {
         atlas = self.atlas,
-        uv = self.atlasData[id],
-        metadata = self.atlasData[id] and self.atlasData[id].metadata or {}
+        quad = self:getQuad(id),
+        uv = uv,
+        metadata = uv.metadata or {}
     }
 end
+
+-- Gets the sprite and the quad for it
+-- (id: Sprite id)
+function imageLand:getSprite(id)
+    if not self.atlas or self.needsRebuild then self:buildAtlas() end
+
+    local uv = self.atlasData[id]
+    if not uv then return nil end
+
+    return self.atlas, self:getQuad(id)
+end
+
 
 -- Creates quad for sprite from atlas  
 -- (id: Sprite id)
